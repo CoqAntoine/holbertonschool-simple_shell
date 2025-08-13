@@ -43,11 +43,11 @@ int main(int argc, char *argv[], char **envp)
 		/*créé un processus enfant pour éxecuter la commande à l'aide d'execve*/
 		child_pid = fork();
 		if (child_pid == -1)
-			perror("fork");
+			perror("./shell");
 		if (child_pid == 0)
 		{
 			if ((execve(command[0], command, envp)) == -1)
-				perror("execve"), exit(EXIT_FAILURE);
+				perror("./shell"), exit(EXIT_FAILURE);
 		}
 		else
 			wait(&status);
