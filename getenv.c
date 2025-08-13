@@ -1,23 +1,30 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include <sys/types.h>
 
 extern char **environ;
 
 int main()
 {
-    int i = 0;
-    char *_path, *token;
+    int size, i = 0;
+    char *line = NULL;
+    size_t buffer = 0;
+    char *variable;
 
-    _path = getenv("PATH");
+    size = getline(&line, &buffer, stdin);
+    if (line[size -1] == '\n')
+        line[size - 1] = '\0';
 
-    token = strtok(_path, ":");
-    for (i = 0; token != NULL; i++)
+    for (i = 0; environ[i] != NULL; i++)
     {
-        printf("%s\n", token);
-        token = strtok(NULL, ":");
+        variable = strtok(environ[i], "=");
+        if (strcmp(line, variable) == 0)
+        {
+            variable = strtok(NULL, "=");
+            printf("%s\n", variable);
+        }
     }
-
     return (0);
 }
