@@ -20,6 +20,10 @@ int main(int argc, char *argv[], char **envp)
 	pid_t child_pid;
 	int result = 0, status, i = 1;
 
+	if (i == 2)
+	{
+		printf("%d, %s", argc, argv[0]);
+	}
 	while (1)
 	{
 		printf("$ ");
