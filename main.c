@@ -50,11 +50,10 @@ int main(int argc, char *argv[], char **envp)
 		if (line[result - 1] == '\n')
 			line[result - 1] = '\0';
 		/*récupère les arguments de la commande et les rentre dans un tableau*/
+		i = 1;
 		command[0] = strtok(line, " ");
-		do {
-			command[i] = strtok(NULL, " ");
+		while ((command[i] = strtok(NULL, " ")) != NULL)
 			i++;
-		} while (command[i] != NULL);
 		command[i] = NULL;
 		/*créé un processus enfant pour éxecuter la commande à l'aide d'execve*/
 		child_pid = fork();
