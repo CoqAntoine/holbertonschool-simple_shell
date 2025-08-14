@@ -33,7 +33,8 @@ int main(int argc, char *argv[], char **envp)
 		printf("%d", argc);
 	while (1)
 	{
-		printf("$ ");
+		if (isatty(STDIN_FILENO))
+			printf("$ ");
 		count_shell++;
 		/*l'utilisateur rentre une commande*/
 		result = getline(&line, &buffer, stdin);
@@ -41,7 +42,8 @@ int main(int argc, char *argv[], char **envp)
 		if (result == -1)
 		{
 			free(line);
-			printf("\n");
+			if (isatty(STDIN_FILENO))
+				printf("\n");
 			exit(EXIT_SUCCESS);
 		}
 		/*supprime le retour à la ligne à la fin de la commande*/
@@ -62,7 +64,7 @@ int main(int argc, char *argv[], char **envp)
 		{
 			if ((execve(command[0], command, envp)) == -1)
 			{
-				sprintf(error_string, "%s: %i: %s: ", argv[0], count_shell, command[0]);
+				sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
 				perror(error_string);
 				exit(EXIT_FAILURE);
 			}
