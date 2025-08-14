@@ -15,14 +15,15 @@
 
 int main(int argc, char *argv[], char **envp)
 {
-	char *line = NULL, *command[10];
+	char *line = NULL, *command[10], error_string[256];
 	size_t buffer = 0;
 	pid_t child_pid;
-	int result = 0, status, i = 1;
+	int result = 0, count_shell = 0, status, i = 1;
 
 	while (1)
 	{
 		printf("$ ");
+		count_shell++;
 		/*l'utilisateur rentre une commande*/
 		result = getline(&line, &buffer, stdin);
 		if (result == -1)
@@ -47,7 +48,11 @@ int main(int argc, char *argv[], char **envp)
 		if (child_pid == 0)
 		{
 			if ((execve(command[0], command, envp)) == -1)
-				perror("execve"), exit(EXIT_FAILURE);
+			{
+				sprintf(error_string, "%s: %i: %s: ", argv[0], count_shell, command[0]);
+				perror(error_string);
+				exit(EXIT_FAILURE);
+			}
 		}
 		else
 			wait(&status);
