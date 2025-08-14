@@ -5,6 +5,12 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
+void handle_sigint()
+{
+    write(STDOUT_FILENO, "\n", 1); // retour à la ligne
+    write(STDOUT_FILENO, "$ ", 2); // réafficher le prompt
+}
+
 /**
  * main - main function that open a shell and permit few commands
  * @argc: none
@@ -20,19 +26,22 @@ int main(int argc, char *argv[], char **envp)
 	pid_t child_pid;
 	int result = 0, count_shell = 0, status, i = 1;
 
+	/*prise en compte du ctrl+C lors de la saisie*/
+	signal(SIGINT, handle_sigint);
+	/*evite le warning (non utilisation de argc)*/
 	if (i == 2)
-	{
-		printf("%d, %s", argc, argv[0]);
-	}
+		printf("%d", argc);
 	while (1)
 	{
 		printf("$ ");
 		count_shell++;
 		/*l'utilisateur rentre une commande*/
 		result = getline(&line, &buffer, stdin);
+		/*prise en compte du ctrl+D lors de la saisie*/
 		if (result == -1)
 		{
 			free(line);
+			printf("\n");
 			exit(EXIT_SUCCESS);
 		}
 		/*supprime le retour à la ligne à la fin de la commande*/
