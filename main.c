@@ -7,8 +7,8 @@
 
 void handle_sigint()
 {
-    write(STDOUT_FILENO, "\n", 1); // retour à la ligne
-    write(STDOUT_FILENO, "$ ", 2); // réafficher le prompt
+    write(STDOUT_FILENO, "\n", 1);
+    write(STDOUT_FILENO, "$ ", 2);
 }
 
 /**
