@@ -132,8 +132,8 @@ int main(int argc, char *argv[], char **envp)
 				if ((execve(command[0], command, envp)) == -1)
 				{
 					sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
-					perror(error_string);
-					exit(EXIT_FAILURE);
+					printf("%s: not found\n", error_string);
+					exit(127);
 				}
 			}
 		}
