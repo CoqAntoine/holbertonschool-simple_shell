@@ -75,6 +75,10 @@ int main(int argc, char *argv[], char **envp)
 		if (line[result - 1] == '\n')
 			line[result - 1] = '\0';
 
+		/*sort du programme si exit est entré */
+		if (strcmp (line, "exit") == 0)
+			exit(0);
+
 		/*faire des copies pour éviter de perdre les valeurs de base*/
 		our_path = _getenv("PATH", envp);
 		folder = malloc(strlen(our_path) + 1);
@@ -92,7 +96,7 @@ int main(int argc, char *argv[], char **envp)
 			folder = strtok(NULL, ":");
 		}
 		free(copy_our_path);
-		free(copy_line);	
+		free(copy_line);
 		/*récupère les arguments de la commande et les rentre dans un tableau*/
 		i = 1;
 		command[0] = strtok(line, " ");
