@@ -22,8 +22,10 @@ void handle_sigint(int sig)
 
 int main(int argc, char *argv[], char **envp)
 {
-	char *line = NULL, *command[10], error_string[256], *folder = NULL, *command_path = NULL, *bl = NULL;
+	char *line = NULL, *command[10], error_string[256], *folder = NULL, command_path[1024], *mini_command = NULL;
+	char *copy_line = NULL;
 	char *our_path = getenv("PATH");
+	char *copy_our_path = NULL;
 	size_t buffer = 0;
 	pid_t child_pid;
 	int result = 0, count_shell = 0, status, i = 0;
@@ -35,7 +37,6 @@ int main(int argc, char *argv[], char **envp)
 	if (i == 2)
 		printf("%d", argc);
 
-	printf("folder : %s, command_path : %s, our_path : %s\n", folder, command_path, our_path);
 	while (1)
 	{
 		/*prompt*/
@@ -59,25 +60,23 @@ int main(int argc, char *argv[], char **envp)
 		if (line[result - 1] == '\n')
 			line[result - 1] = '\0';
 
-		/*vérifie si la ligne de commande existe dans le path*/
-		bl = malloc(strlen(our_path) + 1);
-		bl = strtok(line, " ");
+		/*faire des copies pour éviter de perdre les valeurs de base*/
 		folder = malloc(strlen(our_path) + 1);
-		command_path = malloc(strlen(our_path) + 1);
-		folder = strtok(our_path, ":");
+		copy_our_path = strdup(our_path);
+		copy_line = strdup(line);
+		/*mini_commande exemple = ls 	folder exemple = /user/bin */
+		mini_command = strtok(copy_line, " ");
+		folder = strtok(copy_our_path, ":");
+		/*vérifie si la ligne de commande existe dans le path*/
 		while (folder != NULL)
 		{
-			sprintf(command_path, "%s/%s", folder, bl);
+			sprintf(command_path, "%s/%s", folder, mini_command);
 			if (access(command_path, X_OK) == 0)
-			{
 				break;
-			}
-			else
-			{
-				folder = strtok(NULL, ":");
-			}
+			folder = strtok(NULL, ":");
 		}
-			
+		free(copy_our_path);
+		free(copy_line);	
 		/*récupère les arguments de la commande et les rentre dans un tableau*/
 		i = 1;
 		command[0] = strtok(line, " ");
@@ -93,11 +92,23 @@ int main(int argc, char *argv[], char **envp)
 			perror("./shell");
 		if (child_pid == 0)
 		{
-			if ((execve(command_path, command, envp)) == -1)
+			if (folder != NULL)
 			{
-				sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
-				perror(error_string);
-				exit(EXIT_FAILURE);
+				if ((execve(command_path, command, envp)) == -1)
+				{
+					sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
+					perror(error_string);
+					exit(EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				if ((execve(command[0], command, envp)) == -1)
+				{
+					sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
+					perror(error_string);
+					exit(EXIT_FAILURE);
+				}
 			}
 		}
 		else
