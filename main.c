@@ -83,7 +83,11 @@ int main(int argc, char *argv[], char **envp)
 		/*affiche l'environnement si env est entré */
 		if (strcmp (line, "env") == 0)
 		{
-			printf("%s\n", *envp);
+			for (i = 0; envp[i] != NULL; i++)
+			{
+				printf("%s\n", envp[i]);
+			}
+			continue;
 		}
 
 		/*faire des copies pour éviter de perdre les valeurs de base*/
@@ -138,13 +142,13 @@ int main(int argc, char *argv[], char **envp)
 				if (strchr(command[0], '/'))
 				{
 					/*si c'est un dossier, on exécute avec la commande donnée*/
-					if (access(command[0], X_OK) == 0) 
+					if (access(command[0], X_OK) == 0)
 					{
     					execve(command[0], command, envp);
    						perror(error_string);
     					exit(EXIT_FAILURE);
 					}
-					else 
+					else
 					{
     					fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
     					exit(127);
@@ -156,7 +160,7 @@ int main(int argc, char *argv[], char **envp)
 					fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
 					exit(127);
 				}
-			}	
+			}
 		}
 		else
 			wait(&status);
