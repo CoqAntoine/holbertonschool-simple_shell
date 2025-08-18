@@ -79,6 +79,12 @@ int main(int argc, char *argv[], char **envp)
 		if (strcmp (line, "exit") == 0)
 			exit(0);
 
+		/*affiche l'environnement si env est entré */
+		if (strcmp (line, "env") == 0)
+		{
+			printf("%s\n", *envp);
+		}
+
 		/*faire des copies pour éviter de perdre les valeurs de base*/
 		our_path = _getenv("PATH", envp);
 		folder = malloc(strlen(our_path) + 1);
