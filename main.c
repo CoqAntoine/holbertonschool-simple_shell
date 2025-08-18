@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 
@@ -101,13 +102,14 @@ int main(int argc, char *argv[], char **envp)
 			folder = strtok(NULL, ":");
 		}
 		free(copy_our_path);
-		free(copy_line);
 		/*récupère les arguments de la commande et les rentre dans un tableau*/
-		i = 1;
-		command[0] = strtok(line, " ");
-		while ((command[i] = strtok(NULL, " ")) != NULL)
-			i++;
-		command[i] = NULL;
+		i = 0;
+		command[i] = strtok(line, " ");
+		while (command[i] != NULL)
+		{
+    		i++;
+    		command[i] = strtok(NULL, " ");
+		}
 
 		/*si l'utilisateur n'entre rien, le prompt se réaffiche*/
 		if (command[0] == NULL)
