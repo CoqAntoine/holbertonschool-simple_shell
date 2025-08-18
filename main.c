@@ -101,7 +101,6 @@ int main(int argc, char *argv[], char **envp)
 				break;
 			folder = strtok(NULL, ":");
 		}
-		free(copy_our_path);
 		/*récupère les arguments de la commande et les rentre dans un tableau*/
 		i = 0;
 		command[i] = strtok(line, " ");
@@ -110,7 +109,8 @@ int main(int argc, char *argv[], char **envp)
     		i++;
     		command[i] = strtok(NULL, " ");
 		}
-
+		free(copy_our_path);
+		free(copy_line);
 		/*si l'utilisateur n'entre rien, le prompt se réaffiche*/
 		if (command[0] == NULL)
     		continue;
@@ -138,11 +138,16 @@ int main(int argc, char *argv[], char **envp)
 				if (strchr(command[0], '/'))
 				{
 					/*si c'est un dossier, on exécute avec la commande donnée*/
-					if ((execve(command[0], command, envp)) == -1)
+					if (access(command[0], X_OK) == 0) 
 					{
-						sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
-						perror(error_string);
-						exit(EXIT_FAILURE);
+    					execve(command[0], command, envp);
+   						perror(error_string);
+    					exit(EXIT_FAILURE);
+					}
+					else 
+					{
+    					fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
+    					exit(127);
 					}
 				}
 				/*sinon, on sors une erreur "not found"*/
@@ -157,6 +162,5 @@ int main(int argc, char *argv[], char **envp)
 			wait(&status);
 	}
 	/*retour de fin*/
-	free(line);
 	return (0);
 }
