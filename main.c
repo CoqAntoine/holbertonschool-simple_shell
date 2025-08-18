@@ -12,6 +12,21 @@ void handle_sigint(int sig)
     write(STDOUT_FILENO, "$ ", 2);
 }
 
+char *_getenv(char *string, char **envp)
+{
+    int i = 0;
+	size_t len = strlen(string);
+
+    for (i = 0; envp[i] != NULL; i++)
+    {
+        if (strncmp(envp[i], string, len) == 0 && envp[i][len] == '=')
+        {
+            return (envp[i] + len + 1);
+        }
+    }
+    return (NULL);
+}
+
 /**
  * main - main function that open a shell and permit few commands
  * @argc: none
@@ -24,7 +39,7 @@ int main(int argc, char *argv[], char **envp)
 {
 	char *line = NULL, *command[10], error_string[256], *folder = NULL, command_path[1024], *mini_command = NULL;
 	char *copy_line = NULL;
-	char *our_path = getenv("PATH");
+	char *our_path = NULL;
 	char *copy_our_path = NULL;
 	size_t buffer = 0;
 	pid_t child_pid;
@@ -61,6 +76,7 @@ int main(int argc, char *argv[], char **envp)
 			line[result - 1] = '\0';
 
 		/*faire des copies pour éviter de perdre les valeurs de base*/
+		our_path = _getenv("PATH", envp);
 		folder = malloc(strlen(our_path) + 1);
 		copy_our_path = strdup(our_path);
 		copy_line = strdup(line);
