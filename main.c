@@ -5,8 +5,9 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-void handle_sigint()
+void handle_sigint(int sig)
 {
+	(void)sig;
     write(STDOUT_FILENO, "\n", 1);
     write(STDOUT_FILENO, "$ ", 2);
 }
