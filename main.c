@@ -38,13 +38,13 @@ char *_getenv(char *string, char **envp)
 
 int main(int argc, char *argv[], char **envp)
 {
-	char *line = NULL, *command[10], error_string[256], *folder = NULL, command_path[1024], *mini_command = NULL, str_exit[256];
+	char *line = NULL, *command[10], error_string[256], *folder = NULL, command_path[1024], *mini_command = NULL;
 	char *copy_line = NULL;
 	char *our_path = NULL;
 	char *copy_our_path = NULL;
 	size_t buffer = 0;
 	pid_t child_pid;
-	int result = 0, count_shell = 0, status, i = 0, y = 0;
+	int result = 0, count_shell = 0, status, i = 0;
 
 	/*prise en compte du ctrl+C lors de la saisie*/
 	signal(SIGINT, handle_sigint);
@@ -62,7 +62,6 @@ int main(int argc, char *argv[], char **envp)
 
 		/*l'utilisateur rentre une commande*/
 		result = getline(&line, &buffer, stdin);
-
 		/*prise en compte du ctrl+D lors de la saisie*/
 		if (result == -1)
 		{
@@ -77,22 +76,7 @@ int main(int argc, char *argv[], char **envp)
 			line[result - 1] = '\0';
 
 		/*sort du programme si exit est entré */
-		y = 0;
-		for (i = 0; line[i] != '\0'; i++)
-		{
-			if (line[i] >= 'a' && line[i] <= 'z')
-			{
-				str_exit[y] = line[i];
-				i++;
-				while (line[i] != ' ' && line[i] != '\0')
-				{
-					y++;
-					str_exit[y] = line[i];
-					i++;
-				}
-			}
-		}
-		if (strcmp (str_exit, "exit") == 0)
+		if (strcmp (line, "exit") == 0)
 			exit(0);
 
 		/*affiche l'environnement si env est entré */
@@ -134,51 +118,31 @@ int main(int argc, char *argv[], char **envp)
 		if (command[0] == NULL)
     		continue;
 		/*créé un processus enfant pour éxecuter la commande à l'aide d'execve*/
-		child_pid = fork();
-		if (child_pid == -1)
-			perror("./shell");
-		if (child_pid == 0)
+		if (access(command_path, X_OK) == 0 || access(command[0], X_OK) == 0)
 		{
-			/*s'il a trouvé une correspondance*/
-			if (folder != NULL)
+			child_pid = fork();
+			if (child_pid == -1)
+				perror("./shell");
+			if (child_pid == 0)
 			{
-				/*on execute avec la commande_path créée */
-				if ((execve(command_path, command, envp)) == -1)
-				{
-					sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
-					perror(error_string);
-					exit(EXIT_FAILURE);
-				}
-			}
-			/*s'il n'a pas trouvé de correspondance*/
-			else
-			{
-				/*on vérifie si c'est un dossier (contenant un '/') ou si c'est juste une commande*/
 				if (strchr(command[0], '/'))
 				{
-					/*si c'est un dossier, on exécute avec la commande donnée*/
-					if (access(command[0], X_OK) == 0)
-					{
-    					execve(command[0], command, envp);
-   						perror(error_string);
-    					exit(EXIT_FAILURE);
-					}
-					else
-					{
-    					fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
-    					exit(127);
-					}
+    				execve(command[0], command, envp);
+   					perror(error_string);
+    				exit(EXIT_FAILURE);
 				}
-				/*sinon, on sors une erreur "not found"*/
 				else
 				{
-					fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
-					exit(127);
+					execve(command_path, command, envp);
+   					perror(error_string);
+    				exit(EXIT_FAILURE);
 				}
 			}
+			else
+				wait(&status);
 		}
 		else
-			wait(&status);
+    		fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
 	}
 	/*retour de fin*/
 	return (0);
