@@ -87,7 +87,6 @@ int main(int argc, char *argv[], char **envp)
 
 		/*faire des copies pour éviter de perdre les valeurs de base*/
 		our_path = _getenv("PATH", envp);
-		folder = malloc(strlen(our_path) + 1);
 		copy_our_path = strdup(our_path);
 		copy_line = strdup(line);
 		/*mini_commande exemple = ls 	folder exemple = /user/bin */
@@ -110,16 +109,19 @@ int main(int argc, char *argv[], char **envp)
 			i++;
 		command[i] = NULL;
 
-		/*créé un processus enfant pour éxecuter la commande à l'aide d'execve*/
+		/*si l'utilisateur n'entre rien, le prompt se réaffiche*/
 		if (command[0] == NULL)
     		continue;
+		/*créé un processus enfant pour éxecuter la commande à l'aide d'execve*/
 		child_pid = fork();
 		if (child_pid == -1)
 			perror("./shell");
 		if (child_pid == 0)
 		{
+			/*s'il a trouvé une correspondance*/
 			if (folder != NULL)
 			{
+				/*on execute avec la commande_path créée */
 				if ((execve(command_path, command, envp)) == -1)
 				{
 					sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
@@ -127,15 +129,27 @@ int main(int argc, char *argv[], char **envp)
 					exit(EXIT_FAILURE);
 				}
 			}
+			/*s'il n'a pas trouvé de correspondance*/
 			else
 			{
-				if ((execve(command[0], command, envp)) == -1)
+				/*on vérifie si c'est un dossier (contenant un '/') ou si c'est juste une commande*/
+				if (strchr(command[0], '/'))
 				{
-					sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
-					printf("%s: not found\n", error_string);
+					/*si c'est un dossier, on exécute avec la commande donnée*/
+					if ((execve(command[0], command, envp)) == -1)
+					{
+						sprintf(error_string, "%s: %i: %s", argv[0], count_shell, command[0]);
+						perror(error_string);
+						exit(EXIT_FAILURE);
+					}
+				}
+				/*sinon, on sors une erreur "not found"*/
+				else
+				{
+					fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
 					exit(127);
 				}
-			}
+			}	
 		}
 		else
 			wait(&status);
