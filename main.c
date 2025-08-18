@@ -57,6 +57,8 @@ int main(int argc, char *argv[], char **envp)
 			i++;
 		command[i] = NULL;
 		/*créé un processus enfant pour éxecuter la commande à l'aide d'execve*/
+		if (command[0] == NULL)
+    		continue;
 		child_pid = fork();
 		if (child_pid == -1)
 			perror("./shell");
