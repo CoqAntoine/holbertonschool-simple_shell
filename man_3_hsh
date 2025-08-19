@@ -1,0 +1,56 @@
+.TH man 3 "19 August 2025" "1.0" "Simple Shell man page"
+
+.SH NAME
+
+Simple Shell \- create a new shell in your terminal.
+
+.SH SYNOPSIS
+
+$ [command_line] [argument_1] ...
+.P
+(You may first enable the Simple Shell by executing the hsh file : ./hsh)
+
+.SH DESCRIPTION
+
+Simple Shell creates a new shell in your terminal. I can be used like a Linux shell.
+.br
+As the Simple Shell handle the PATH environment variable, you can use commands by typing their entire path, or simply the command name if they are available in the PATH. 
+.br
+You can also add arguments to your commands while using the Simple Shell. 
+.P
+The Simple Shell have a bunch of built-in commands, such as 
+.B env 
+and 
+.B exit.
+You can directly type them in your terminal to print your environment variables or exit the Simple Shell.  
+.P
+To exit the Simple Shell, you can either use 
+.B exit 
+or the command 
+.B Ctrl+D.
+
+.SH RETURN VALUE
+
+Simple Shell returns 0 when it exits with success, or 1 when an error occurs. 
+
+.SH EXAMPLES
+
+Output examples :
+
+.P 
+$ ls
+.br
+file_1 file_2 file_3
+.br
+$ /bin/ls -l
+.br
+-rw-r--r-- 1 John John     8 Aug 18 16:20 file_1
+.br
+-rwxr-xr-x 1 John John 17888 Aug 19 11:03 file_2
+.br
+-rw-r--r-- 1 John John  4221 Aug 19 11:03 file_3
+
+.SH AUTHOR
+
+Antoine Coquemont <https://github.com/CoqAntoine>
+Guillaume Leray Girardeau <https://github.com/GuillaumeLerayGirardeau>

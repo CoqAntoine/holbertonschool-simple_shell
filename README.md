@@ -29,8 +29,8 @@ Then, you can access the *Simple Shell* in your terminal by executing the **hsh*
 
 You can found the manual page of the *Simple Shell* by typing this command line in your terminal :
 
-````C
-command line
+````
+man ./man_3_hsh
 
 ````
 ## Usage/Examples
