@@ -28,6 +28,55 @@ char *_getenv(char *string, char **envp)
     return (NULL);
 }
 
+int built_in_checks(char *line, char **envp)
+{
+
+	int i = 0, y = 0;
+	char *built_in_line;
+
+	if (line == NULL)
+		return (0);
+
+	built_in_line = malloc(sizeof(line) + 1);
+	if (built_in_line == NULL)
+		exit(1);
+
+	/*sort du programme si exit est entré */
+	while (line[i] != '\0')
+	{
+		if (line[i] >= 'a' && line[i] <= 'z')
+		{
+			built_in_line[y] = line[i];
+			y++;
+			i++;
+		}
+		else if (line[i] == ' ')
+			i++;
+		else
+			break;
+	}
+
+	if (strcmp (built_in_line, "exit") == 0)
+	{
+		free(line);
+		free(built_in_line);
+		exit(0);
+	}
+
+	/*affiche l'environnement si env est entré */
+	if (strcmp (built_in_line, "env") == 0)
+	{
+		for (i = 0; envp[i] != NULL; i++)
+		{
+			printf("%s\n", envp[i]);
+		}
+		free(built_in_line);
+		return (1);
+	}
+	free(built_in_line);
+	return (0);
+}
+
 /**
  * main - main function that open a shell and permit few commands
  * @argc: none
@@ -75,19 +124,9 @@ int main(int argc, char *argv[], char **envp)
 		if (line[result - 1] == '\n')
 			line[result - 1] = '\0';
 
-		/*sort du programme si exit est entré */
-		if (strcmp (line, "exit") == 0)
-			exit(0);
-
-		/*affiche l'environnement si env est entré */
-		if (strcmp (line, "env") == 0)
-		{
-			for (i = 0; envp[i] != NULL; i++)
-			{
-				printf("%s\n", envp[i]);
-			}
+		/*check si les built-in env et exit sont entré*/
+		if ((built_in_checks(line, envp)) == 1)
 			continue;
-		}
 
 		/*faire des copies pour éviter de perdre les valeurs de base*/
 		our_path = _getenv("PATH", envp);
