@@ -15,6 +15,7 @@ void handle_sigint(int sig)
     	write(STDOUT_FILENO, "\n", 1);
 }
 
+
 char *_getenv(char *string, char **envp)
 {
     int i = 0;
@@ -29,6 +30,56 @@ char *_getenv(char *string, char **envp)
     }
     return (NULL);
 }
+
+int built_in_checks(char *line, char **envp)
+{
+
+	int i = 0, y = 0;
+	char *built_in_line;
+
+	if (line == NULL)
+		return (0);
+
+	built_in_line = malloc(sizeof(line) + 1);
+	if (built_in_line == NULL)
+		exit(1);
+
+	/*sort du programme si exit est entré */
+	while (line[i] != '\0')
+	{
+		if (line[i] >= 'a' && line[i] <= 'z')
+		{
+			built_in_line[y] = line[i];
+			y++;
+			i++;
+		}
+		else if (line[i] == ' ')
+			i++;
+		else
+			break;
+	}
+
+	if (strcmp (built_in_line, "exit") == 0)
+	{
+		free(line);
+		free(built_in_line);
+		exit(0);
+	}
+
+	/*affiche l'environnement si env est entré */
+	if (strcmp (built_in_line, "env") == 0)
+	{
+		for (i = 0; envp[i] != NULL; i++)
+		{
+			printf("%s\n", envp[i]);
+		}
+		free(built_in_line);
+		return (1);
+	}
+	free(built_in_line);
+	return (0);
+}
+
 
 /**
  * main - main function that open a shell and permit few commands
