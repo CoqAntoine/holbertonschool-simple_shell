@@ -59,7 +59,8 @@ int built_in_checks(char *line, char **envp)
 	if (strcmp (built_in_line, "exit") == 0)
 	{
 		free(built_in_line);
-		return (2);
+		free (line);
+		exit (1);
 	}
 
 	/*affiche l'environnement si env est entré */
@@ -123,7 +124,7 @@ int main(int argc, char *argv[], char **envp)
 		if (line[result - 1] == '\n')
 			line[result - 1] = '\0';
 
-		/*check si les built-in env et exit sont entré*/
+		/*check si les built-in env et exit sont entrés*/
 		if ((built_in_checks(line, envp)) == 1)
 			continue;
 		else if ((built_in_checks(line, envp)) == 2)
@@ -133,7 +134,7 @@ int main(int argc, char *argv[], char **envp)
 		our_path = _getenv("PATH", envp);
 		copy_our_path = strdup(our_path);
 		copy_line = strdup(line);
-		/*mini_commande exemple = ls 	folder exemple = /user/bin */
+		/*mini_command exemple = ls 	folder exemple = /user/bin */
 		mini_command = strtok(copy_line, " ");
 		folder = strtok(copy_our_path, ":");
 		/*vérifie si la ligne de commande existe dans le path*/
