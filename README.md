@@ -1,6 +1,6 @@
 # Simple Shell
 
-The *Simple Shell* is a simplified reproduction of a Linux command terminal. You can use it to perform basic tasks on your computer. 
+The *Simple Shell* is a simplified reproduction of a Linux command terminal. You can use it to perform basic tasks on your computer.
 
 # Table of Contents
 
@@ -23,7 +23,7 @@ To use the *Simple Shell*, you may download all the files in this repository, an
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ````
 
-Then, you can access the *Simple Shell* in your terminal by executing the **hsh** file. 
+Then, you can access the *Simple Shell* in your terminal by executing the **hsh** file.
 
 ## Manual Page
 
@@ -37,8 +37,8 @@ command line
 
 - **Enter commands**
 
-As the *Simple Shell* handle the PATH environment variable, you can use commands by typing their entire path, or simply the command name if they are available in the PATH.  
-You can also add arguments to your commands while using the *Simple Shell*. 
+As the *Simple Shell* handle the PATH environment variable, you can use commands by typing their entire path, or simply the command name if they are available in the PATH.
+You can also add arguments to your commands while using the *Simple Shell*.
 
 ````
 $ ls
@@ -51,7 +51,7 @@ $ /bin/ls -l
 
 - **Built-in commands**
 
-The *Simple Shell* have a bunch of built-in commands, such as **env** and **exit**. You can directly type them in your terminal to print your environment variables or exit the *Simple Shell*.  
+The *Simple Shell* have a bunch of built-in commands, such as **env** and **exit**. You can directly type them in your terminal to print your environment variables or exit the *Simple Shell*.
 
 - **Exit the *Simple Shell***
 
@@ -59,11 +59,11 @@ To exit the *Simple Shell*, you can either use **exit** or the command **Ctrl+D*
 
 ````
 $ exit
-```` 
+````
 
 ## Code Specifications
 
-This project was made using the **C89** programmation language. It is also using the **Betty** coding style to organise the files. 
+This project was made using the **C89** programmation language. It is also using the **Betty** coding style to organise the files.
 ## Authors
 
 - [@CoqAntoine](https://github.com/CoqAntoine)

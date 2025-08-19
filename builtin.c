@@ -1,6 +1,18 @@
 #include "simple_shell.h"
 
-/*Built-ins (exit, env)*/
+/**
+ * built_in_checks - Handle built-in commands (exit, env)
+ * @args: Array of command arguments
+ * @envp: Array of environment variables
+ * @line: Original input line (freed if needed)
+ *
+ * This function checks if the first argument matches a built-in
+ * command. If "exit" is entered, the shell exits after freeing
+ * the line buffer. If "env" is entered, it prints the current
+ * environment variables.
+ *
+ * Return: 1 if a built-in command was executed, 0 otherwise.
+ */
 int built_in_checks(char **args, char **envp, char *line)
 {
 	int i;

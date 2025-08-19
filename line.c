@@ -1,6 +1,14 @@
 #include "simple_shell.h"
 
-/*Read of a line given by user*/
+/**
+ * read_line - Read a line of input from the user
+ *
+ * This function uses getline() to read a line from stdin.
+ * If EOF is reached (Ctrl+D), the program exits cleanly.
+ * The trailing newline is removed if present.
+ *
+ * Return: Pointer to the input line (must be freed by caller).
+ */
 char *read_line(void)
 {
 	char *line = NULL;
@@ -19,10 +27,17 @@ char *read_line(void)
 	if (line[result - 1] == '\n')
 		line[result - 1] = '\0';
 
-	return line;
+	return (line);
 }
 
-/*Tokenizing (parse tokens in args[])*/
+/**
+ * token_command - Split a command line into arguments
+ * @line: Input string to parse
+ * @args: Array to store the resulting tokens
+ *
+ * This function tokenizes the input string using spaces as
+ * delimiters. Tokens are stored in args[] and terminated by NULL.
+ */
 void token_command(char *line, char **args)
 {
 	int i;
