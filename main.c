@@ -6,17 +6,13 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-/*Signal Ctrl+C*/
 void handle_sigint(int sig)
 {
-    (void)sig;
-    if (isatty(STDIN_FILENO))
-        write(STDOUT_FILENO, "\n$ ", 3);
-    else
-        write(STDOUT_FILENO, "\n", 1);
+	(void)sig;
+    write(STDOUT_FILENO, "\n", 1);
+    write(STDOUT_FILENO, "$ ", 2);
 }
 
-/*custom getenv*/
 char *_getenv(char *string, char **envp)
 {
     int i = 0;
@@ -91,21 +87,42 @@ int built_in_checks(char *line, char **envp)
 
 int main(int argc, char *argv[], char **envp)
 {
-    char *line = NULL;
-    size_t buffer = 0;
-    ssize_t result;
+	char *line = NULL, *command[10], error_string[256], *folder = NULL, command_path[1024], *mini_command = NULL;
+	char *copy_line = NULL;
+	char *our_path = NULL;
+	char *copy_our_path = NULL;
+	size_t buffer = 0;
+	pid_t child_pid;
+	int result = 0, count_shell = 0, status, i = 0;
 
-    result = getline(&line, &buffer, stdin);
-    if (result == -1)
-    {
-        free(line);
-        if (isatty(STDIN_FILENO))
-            printf("\n");
-        exit(EXIT_SUCCESS);
-    }
+	/*prise en compte du ctrl+C lors de la saisie*/
+	signal(SIGINT, handle_sigint);
 
-    if (line[result - 1] == '\n')
-        line[result - 1] = '\0';
+	/*evite le warning (non utilisation de argc)*/
+	if (i == 2)
+		printf("%d", argc);
+
+	while (1)
+	{
+		/*prompt*/
+		if (isatty(STDIN_FILENO))
+			printf("$ ");
+		count_shell++;
+
+		/*l'utilisateur rentre une commande*/
+		result = getline(&line, &buffer, stdin);
+		/*prise en compte du ctrl+D lors de la saisie*/
+		if (result == -1)
+		{
+			free(line);
+			if (isatty(STDIN_FILENO))
+				printf("\n");
+			exit(EXIT_SUCCESS);
+		}
+
+		/*supprime le retour à la ligne à la fin de la commande*/
+		if (line[result - 1] == '\n')
+			line[result - 1] = '\0';
 
 		/*check si les built-in env et exit sont entrés*/
 		if ((built_in_checks(line, envp)) == 1)
