@@ -80,7 +80,6 @@ int built_in_checks(char *line, char **envp)
 	return (0);
 }
 
-
 /**
  * main - main function that open a shell and permit few commands
  * @argc: none
@@ -128,19 +127,9 @@ int main(int argc, char *argv[], char **envp)
 		if (line[result - 1] == '\n')
 			line[result - 1] = '\0';
 
-		/*sort du programme si exit est entré */
-		if (strcmp (line, "exit") == 0)
-			exit(0);
-
-		/*affiche l'environnement si env est entré */
-		if (strcmp (line, "env") == 0)
-		{
-			for (i = 0; envp[i] != NULL; i++)
-			{
-				printf("%s\n", envp[i]);
-			}
+		/*check si les built-in env et exit sont entré*/
+		if ((built_in_checks(line, envp)) == 1)
 			continue;
-		}
 
 		/*faire des copies pour éviter de perdre les valeurs de base*/
 		our_path = _getenv("PATH", envp);
