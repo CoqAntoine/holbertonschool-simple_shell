@@ -58,9 +58,8 @@ int built_in_checks(char *line, char **envp)
 
 	if (strcmp (built_in_line, "exit") == 0)
 	{
-		free(line);
 		free(built_in_line);
-		exit(0);
+		return (2);
 	}
 
 	/*affiche l'environnement si env est entré */
@@ -127,6 +126,8 @@ int main(int argc, char *argv[], char **envp)
 		/*check si les built-in env et exit sont entré*/
 		if ((built_in_checks(line, envp)) == 1)
 			continue;
+		else if ((built_in_checks(line, envp)) == 2)
+			break;
 
 		/*faire des copies pour éviter de perdre les valeurs de base*/
 		our_path = _getenv("PATH", envp);
@@ -184,5 +185,6 @@ int main(int argc, char *argv[], char **envp)
     		fprintf(stderr, "%s: %d: %s: not found\n", argv[0], count_shell, command[0]);
 	}
 	/*retour de fin*/
+	free(line);
 	return (0);
 }
