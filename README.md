@@ -2,6 +2,15 @@
 
 The *Simple Shell* is a simplified reproduction of a Linux command terminal. You can use it to perform basic tasks on your computer. 
 
+# Table of Contents
+
+- [Flowchart](#flowchart)
+- [Installation](#installation)
+- [Manual Page](#manual-page)
+- [Usage/Examples](#usageexamples)
+- [Code Specifications](#code-specifications)
+- [Authors](#authors)
+
 ## Flowchart
 
 *Flowchart coming soon !*
@@ -15,6 +24,7 @@ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ````
 
 Then, you can access the *Simple Shell* in your terminal by executing the **hsh** file. 
+
 ## Manual Page
 
 You can found the manual page of the *Simple Shell* by typing this command line in your terminal :
