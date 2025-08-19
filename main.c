@@ -9,8 +9,10 @@
 void handle_sigint(int sig)
 {
 	(void)sig;
-    write(STDOUT_FILENO, "\n", 1);
-    write(STDOUT_FILENO, "$ ", 2);
+	if (isatty(STDIN_FILENO))
+    	write(STDOUT_FILENO, "\n$ ", 3);
+	else
+    	write(STDOUT_FILENO, "\n", 1);
 }
 
 char *_getenv(char *string, char **envp)
@@ -38,13 +40,13 @@ char *_getenv(char *string, char **envp)
 
 int main(int argc, char *argv[], char **envp)
 {
-	char *line = NULL, *command[10], error_string[256], *folder = NULL, command_path[1024], *mini_command = NULL;
+	char *line = NULL, *command[128], error_string[256], *folder = NULL, command_path[1024], *mini_command = NULL;
 	char *copy_line = NULL;
 	char *our_path = NULL;
 	char *copy_our_path = NULL;
 	size_t buffer = 0;
 	pid_t child_pid;
-	int result = 0, count_shell = 0, status, i = 0;
+	int result = 0, count_shell = 0, status, i = 0, found = 0;
 
 	/*prise en compte du ctrl+C lors de la saisie*/
 	signal(SIGINT, handle_sigint);
@@ -97,11 +99,15 @@ int main(int argc, char *argv[], char **envp)
 		mini_command = strtok(copy_line, " ");
 		folder = strtok(copy_our_path, ":");
 		/*vérifie si la ligne de commande existe dans le path*/
+		found = 0;
 		while (folder != NULL)
 		{
-			sprintf(command_path, "%s/%s", folder, mini_command);
+			snprintf(command_path, sizeof(command_path), "%s/%s", folder, mini_command);
 			if (access(command_path, X_OK) == 0)
+			{
+				found = 1;
 				break;
+			}
 			folder = strtok(NULL, ":");
 		}
 		/*récupère les arguments de la commande et les rentre dans un tableau*/
@@ -128,13 +134,13 @@ int main(int argc, char *argv[], char **envp)
 				if (strchr(command[0], '/'))
 				{
     				execve(command[0], command, envp);
-   					perror(error_string);
+   					perror(argv[0]);
     				exit(EXIT_FAILURE);
 				}
 				else
 				{
 					execve(command_path, command, envp);
-   					perror(error_string);
+   					perror(argv[0]);
     				exit(EXIT_FAILURE);
 				}
 			}
