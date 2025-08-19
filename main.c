@@ -130,6 +130,7 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 
 	if (strchr(args[0], '/'))
 	{
+		/*execute_command_complete_path(args, envp, argv0, count);*/
 		if (access(args[0], X_OK) == 0)
 		{
 			child_pid = fork();
@@ -151,6 +152,7 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 
 	if (find_command_path(args[0], envp, cmd_path))
 	{
+		/*execute_command_PathCommand(args, envp, argv0, count);*/
 		child_pid = fork();
 		if (child_pid == -1)
 		{
