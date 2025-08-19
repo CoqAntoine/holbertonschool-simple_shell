@@ -31,7 +31,6 @@ You can found the manual page of the *Simple Shell* by typing this command line 
 
 ````
 man ./man_3_hsh
-
 ````
 ## Usage/Examples
 
@@ -64,7 +63,8 @@ $ exit
 ## Code Specifications
 
 This project was made using the **C89** programmation language. It is also using the **Betty** coding style to organise the files.
+
 ## Authors
 
-- [@CoqAntoine](https://github.com/CoqAntoine)
+- [@CoqAntoine](https://github.com/CoqAntoine) 
 - [@GuillaumeLerayGirardeau](https://github.com/GuillaumeLerayGirardeau)
