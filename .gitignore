@@ -1,3 +1,7 @@
+# Ignorer le fichier de compilation
+hsh
+shell
+
 # Ignorer les exécutables compilés
 a.out
 mon_shell

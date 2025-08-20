@@ -79,11 +79,11 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 	{
 		child_pid = fork();
 		if (child_pid == -1)
-			perror(argv0);
+			perror(args[0]);
 		if (child_pid == 0)
 		{
 			execve(cmd_path, args, envp);
-			perror(argv0);
+			perror(args[0]);
 			exit(EXIT_FAILURE);
 		}
 		else
