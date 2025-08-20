@@ -71,7 +71,11 @@ void execute_command(char **args, char **envp, char *argv0, int count, int *last
 				exit(EXIT_FAILURE);
 			}
 			else
+			{
 				wait(&status);
+				if (WIFEXITED(status))
+    				*last_status = WEXITSTATUS(status);
+			}
 			return;
 		}
 	}
@@ -87,7 +91,11 @@ void execute_command(char **args, char **envp, char *argv0, int count, int *last
 			exit(EXIT_FAILURE);
 		}
 		else
+		{
 			wait(&status);
+			if (WIFEXITED(status))
+    			*last_status = WEXITSTATUS(status);
+		}
 	}
 	else
 	{
