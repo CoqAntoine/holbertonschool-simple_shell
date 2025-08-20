@@ -1,2 +1,23 @@
+# Ignorer le fichier de compilation
+hsh
+shell
+
+# Ignorer les exécutables compilés
+a.out
+mon_shell
 *.exe
-[^.]*
+*.out
+
+# Ignorer les fichiers objets intermédiaires
+*.o
+
+# Ignorer les fichiers temporaires
+*.swp
+*.tmp
+*~
+
+# Ignorer les dossiers de build
+/build/
+/bin/
+/obj/
+/test/
