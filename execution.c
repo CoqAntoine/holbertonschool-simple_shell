@@ -51,7 +51,7 @@ int find_command_path(char *cmd, char **envp, char *cmd_path)
  * path or by searching through PATH. If the command is not
  * found, an error message is printed.
  */
-void execute_command(char **args, char **envp, char *argv0, int count)
+void execute_command(char **args, char **envp, char *argv0, int count, int *last_status)
 {
 	pid_t child_pid;
 	int status;
@@ -91,7 +91,7 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 	}
 	else
 	{
-		status = 127;
+		*last_status = 127;
 		fprintf(stderr, "%s: %d: %s: not found\n", argv0, count, args[0]);
 	}
 }

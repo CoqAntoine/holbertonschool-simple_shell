@@ -10,7 +10,7 @@
  * and executes it. The loop only exits when the program is terminated
  * explicitly (for example with the built-in "exit").
  */
-void main_loop(char *argv0, char **envp)
+void main_loop(char *argv0, char **envp, int *last_status)
 {
 	char *line;
 	char *args[1024];
@@ -27,7 +27,7 @@ void main_loop(char *argv0, char **envp)
 		token_command(line, args);
 
 		if (!built_in_checks(args, envp, line))
-			execute_command(args, envp, argv0, count);
+			execute_command(args, envp, argv0, count, last_status);
 
 		free(line);
 	}
@@ -47,9 +47,11 @@ void main_loop(char *argv0, char **envp)
  */
 int main(int argc, char *argv[], char **envp)
 {
+	int *last_status = 0;
+
 	if (argc > 256)
 		return (1);
 	signal(SIGINT, handle_sigint);
-	main_loop(argv[0], envp);
-	return (0);
+	main_loop(argv[0], envp, last_status);
+	return (*last_status);
 }
