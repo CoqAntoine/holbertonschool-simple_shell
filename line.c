@@ -21,7 +21,7 @@ char *read_line(void)
 		free(line);
 		if (isatty(STDIN_FILENO))
 			printf("\n");
-		exit(EXIT_SUCCESS);
+		return (NULL);
 	}
 
 	if (line[result - 1] == '\n')
