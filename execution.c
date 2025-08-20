@@ -17,7 +17,7 @@ int find_command_path(char *cmd, char **envp, char *cmd_path)
 	char *path, *copy, *folder;
 
 	path = _getenv("PATH", envp);
-	if (!path)
+	if (!path || (strcmp(path, "") == 0))
 		return (0);
 
 	copy = strdup(path);
@@ -91,7 +91,7 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 	}
 	else
 	{
-		fprintf(stderr, "%s: %d: %s: not found\n", argv0, count, args[0]);
 		status = 127;
+		fprintf(stderr, "%s: %d: %s: not found\n", argv0, count, args[0]);
 	}
 }
