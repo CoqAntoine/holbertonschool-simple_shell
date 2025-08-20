@@ -47,11 +47,11 @@ void main_loop(char *argv0, char **envp, int *last_status)
  */
 int main(int argc, char *argv[], char **envp)
 {
-	int *last_status = 0;
+	int last_status = 0;
 
 	if (argc > 256)
 		return (1);
 	signal(SIGINT, handle_sigint);
-	main_loop(argv[0], envp, last_status);
-	return (*last_status);
+	main_loop(argv[0], envp, &last_status);
+	return (last_status);
 }
