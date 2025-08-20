@@ -53,4 +53,5 @@ $ /bin/ls -l
 .SH AUTHOR
 
 Antoine Coquemont <https://github.com/CoqAntoine>
+.br
 Guillaume Leray Girardeau <https://github.com/GuillaumeLerayGirardeau>
