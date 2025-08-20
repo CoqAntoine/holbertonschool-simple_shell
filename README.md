@@ -8,6 +8,7 @@ The *Simple Shell* is a simplified reproduction of a Linux command terminal. You
 - [Installation](#installation)
 - [Manual Page](#manual-page)
 - [Usage/Examples](#usageexamples)
+- [Tests](#tests)
 - [Code Specifications](#code-specifications)
 - [Authors](#authors)
 
@@ -44,14 +45,23 @@ You can also add arguments to your commands while using the *Simple Shell*.
 $ ls
 file_1 file_2 file_3
 $ /bin/ls -l
--rw-r--r-- 1 John John     8 Aug 18 16:20 file_1
--rwxr-xr-x 1 John John 17888 Aug 19 11:03 file_2
--rw-r--r-- 1 John John  4221 Aug 19 11:03 file_3
+-rw-r--r-- 1 john john     8 Aug 18 16:20 file_1
+-rwxr-xr-x 1 john john 17888 Aug 19 11:03 file_2
+-rw-r--r-- 1 john john  4221 Aug 19 11:03 file_3
 ````
 
 - **Built-in commands**
 
 The *Simple Shell* have a bunch of built-in commands, such as **env** and **exit**. You can directly type them in your terminal to print your environment variables or exit the *Simple Shell*.
+
+- **Non-interactive use**
+
+You can use the *Simple Shell* in non-interactive to execute simple tasks your terminal. 
+
+````
+echo "ls" | ./hsh
+file_1 file_2 file_3
+````
 
 - **Exit the *Simple Shell***
 
@@ -59,6 +69,64 @@ To exit the *Simple Shell*, you can either use **exit** or the command **Ctrl+D*
 
 ````
 $ exit
+````
+
+## Tests
+
+You can test the *Simple Shell* by executing those commands :
+
+- **Simple tests**
+
+````
+ls - l
+/bin/ls -l
+pwd
+whoami
+````
+
+*Expected output :*
+
+````
+file_1 file_2 file_3
+file_1 file_2 file_3
+/home/john/your_current_working_directory
+john
+````
+
+- **Built-in test**
+
+When you're trying the **exit** built-in, you're expeted to exit the *Simple Shell.*
+````
+env
+exit
+````
+
+*Expected output :*
+````
+USER=john
+LANGUAGE=en_US
+SESSION=ubuntu
+COMPIZ_CONFIG_PROFILE=ubuntu
+SHLVL=1
+HOME=/home/john
+C_IS=Fun_:)
+DESKTOP_SESSION=ubuntu
+LOGNAME=john
+TERM=xterm-256color
+PATH=/home/john/bin:/home/john/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+DISPLAY=:0
+````
+
+- **Non-interactive test**
+
+Write this command in your terminal <ins>without</ins> being in the *Simple Shell*.
+
+````
+$ echo "ls" | ./hsh
+````
+*Expected output :*
+````
+file_1 file_2 file_3
 ````
 
 ## Code Specifications
