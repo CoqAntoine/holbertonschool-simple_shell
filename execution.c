@@ -90,5 +90,8 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 			wait(&status);
 	}
 	else
+	{
 		fprintf(stderr, "%s: %d: %s: not found\n", argv0, count, args[0]);
+		status = 127;
+	}
 }
