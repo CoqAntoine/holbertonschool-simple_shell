@@ -74,9 +74,11 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 				exit(EXIT_FAILURE);
 			}
 			else
+			{
 				wait(&status);
 				if (WIFSIGNALED(status))
 					fprintf(stderr, "%s: %d: %s: terminated by signal %d\n", argv0, count, args[0], WTERMSIG(status));
+			}
 			return;
 		}
 	}
@@ -95,9 +97,11 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 			exit(EXIT_FAILURE);
 		}
 		else
+		{
 			wait(&status);
 			if (WIFSIGNALED(status))
 				fprintf(stderr, "%s: %d: %s: terminated by signal %d\n", argv0, count, args[0], WTERMSIG(status));
+		}
 	}
 	else
 		fprintf(stderr, "%s: %d: %s: not found\n", argv0, count, args[0]);
