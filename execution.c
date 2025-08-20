@@ -63,15 +63,20 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 		{
 			child_pid = fork();
 			if (child_pid == -1)
-				perror(argv0);
+			{
+				perror("fork");
+				return;
+			}
 			if (child_pid == 0)
 			{
 				execve(args[0], args, envp);
-				perror(argv0);
+				perror(args[0]);
 				exit(EXIT_FAILURE);
 			}
 			else
 				wait(&status);
+				if (WIFSIGNALED(status))
+					fprintf(stderr, "%s: %d: %s: terminated by signal %d\n", argv0, count, args[0], WTERMSIG(status));
 			return;
 		}
 	}
@@ -79,7 +84,10 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 	{
 		child_pid = fork();
 		if (child_pid == -1)
-			perror(args[0]);
+		{
+			perror("fork");
+			return;
+		}
 		if (child_pid == 0)
 		{
 			execve(cmd_path, args, envp);
@@ -88,6 +96,8 @@ void execute_command(char **args, char **envp, char *argv0, int count)
 		}
 		else
 			wait(&status);
+			if (WIFSIGNALED(status))
+				fprintf(stderr, "%s: %d: %s: terminated by signal %d\n", argv0, count, args[0], WTERMSIG(status));
 	}
 	else
 		fprintf(stderr, "%s: %d: %s: not found\n", argv0, count, args[0]);
