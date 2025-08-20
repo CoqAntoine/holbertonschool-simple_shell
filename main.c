@@ -30,8 +30,6 @@ void main_loop(char *argv0, char **envp, int *last_status)
 			execute_command(args, envp, argv0, count, last_status);
 
 		free(line);
-		if (!isatty(STDIN_FILENO))
-			exit(*last_status);
 	}
 }
 
