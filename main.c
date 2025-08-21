@@ -4,6 +4,7 @@
  * main_loop - Main execution loop of the shell
  * @argv0: Program name (used for error messages)
  * @envp: Array of environment variables
+ * @last_status: Integer containing the last status value
  *
  * This function runs an infinite loop that prompts the user for input,
  * reads a command line, tokenizes it, checks if it matches a built-in,
@@ -13,7 +14,7 @@
 void main_loop(char *argv0, char **envp, int *last_status)
 {
 	char *line;
-	char *args[1024];
+	char *args[256];
 	int count;
 
 	count = 0;
@@ -28,7 +29,7 @@ void main_loop(char *argv0, char **envp, int *last_status)
 			break;
 		token_command(line, args);
 
-		if (!built_in_checks(args, envp, line))
+		if (!built_in_checks(args, envp, line, last_status))
 			execute_command(args, envp, argv0, count, last_status);
 
 		free(line);

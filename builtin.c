@@ -5,6 +5,7 @@
  * @args: Array of command arguments
  * @envp: Array of environment variables
  * @line: Original input line (freed if needed)
+ * @last_status: Integer containing the last status value
  *
  * This function checks if the first argument matches a built-in
  * command. If "exit" is entered, the shell exits after freeing
@@ -13,7 +14,7 @@
  *
  * Return: 1 if a built-in command was executed, 0 otherwise.
  */
-int built_in_checks(char **args, char **envp, char *line)
+int built_in_checks(char **args, char **envp, char *line, int *last_status)
 {
 	int i;
 
@@ -23,7 +24,7 @@ int built_in_checks(char **args, char **envp, char *line)
 	if (strcmp(args[0], "exit") == 0)
 	{
 		free(line);
-		exit(0);
+		exit(*last_status);
 	}
 
 	if (strcmp(args[0], "env") == 0)
