@@ -71,7 +71,10 @@ void execute_command(char **args, char **envp, char *argv0, int count, int *last
 				exit(EXIT_FAILURE);
 			}
 			else
+			{
 				wait(&status);
+				*last_status = status >> 8;
+			}
 			return;
 		}
 	}
@@ -87,7 +90,10 @@ void execute_command(char **args, char **envp, char *argv0, int count, int *last
 			exit(EXIT_FAILURE);
 		}
 		else
-			wait(&status);
+			{
+				wait(&status);
+				*last_status = status >> 8;
+			}
 	}
 	else
 	{

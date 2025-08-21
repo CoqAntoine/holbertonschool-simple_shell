@@ -18,6 +18,6 @@ void execute_command(char **args, char **envp, char *argv0, int count, int *last
 char *read_line(void);
 void token_command(char *line, char **args);
 
-int built_in_checks(char **args, char **envp, char *line);
+int built_in_checks(char **args, char **envp, char *line, int *last_status);
 
 #endif
