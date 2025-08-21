@@ -13,7 +13,10 @@ void handle_sigint(int sig);
 char *_getenv(char *string, char **envp);
 
 int find_command_path(char *cmd, char **envp, char *cmd_path);
-void execute_command(char **args, char **envp, char *argv0, int count, int *last_status);
+void fork_execute(char *argv0, char *cmd_path, char **args, char **envp,
+int *last_status);
+void execute_command(char **args, char **envp, char *argv0, int count,
+int *last_status);
 
 char *read_line(void);
 void token_command(char *line, char **args);

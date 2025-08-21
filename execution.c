@@ -41,59 +41,67 @@ int find_command_path(char *cmd, char **envp, char *cmd_path)
 }
 
 /**
+ * fork_execute - Function that fork then execute the command
+ * @argv0: Name of the shell program (for error messages)
+ * @cmd_path: Buffer to store the complete path if found
+ * @args: Array of command arguments
+ * @envp: Array of environment variables
+ * @last_status: Integer containing the last status value
+ *
+ * This function fork the current programm and then execute
+ * it with the path @cmd_path
+ */
+void fork_execute(char *argv0, char *cmd_path, char **args, char **envp,
+int *last_status)
+{
+	pid_t child_pid;
+	int status;
+
+	child_pid = fork();
+	if (child_pid == -1)
+		perror(argv0);
+	if (child_pid == 0)
+	{
+		execve(cmd_path, args, envp);
+		perror(argv0);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		wait(&status);
+		*last_status = status >> 8;
+	}
+}
+
+/**
  * execute_command - Execute a user-entered command
  * @args: Array of command arguments
  * @envp: Array of environment variables
  * @argv0: Name of the shell program (for error messages)
  * @count: Command counter (for error display)
+ * @last_status: Integer containing the last status value
  *
  * This function executes a command either by absolute/relative
  * path or by searching through PATH. If the command is not
  * found, an error message is printed.
  */
-void execute_command(char **args, char **envp, char *argv0, int count, int *last_status)
+void execute_command(char **args, char **envp, char *argv0, int count,
+int *last_status)
 {
-	pid_t child_pid;
-	int status;
 	char cmd_path[1024];
 
 	if (strchr(args[0], '/'))
 	{
 		if (access(args[0], X_OK) == 0)
 		{
-			child_pid = fork();
-			if (child_pid == -1)
-				perror(argv0);
-			if (child_pid == 0)
-			{
-				execve(args[0], args, envp);
-				perror(argv0);
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
-				wait(&status);
-				*last_status = status >> 8;
-			}
+			fork_execute(argv0, args[0], args, envp, last_status);
 			return;
 		}
 	}
 	if (find_command_path(args[0], envp, cmd_path))
 	{
-		child_pid = fork();
-		if (child_pid == -1)
-			perror(argv0);
-		if (child_pid == 0)
-		{
-			execve(cmd_path, args, envp);
-			perror(argv0);
-			exit(EXIT_FAILURE);
-		}
-		else
-			{
-				wait(&status);
-				*last_status = status >> 8;
-			}
+		fork_execute(argv0, cmd_path, args, envp, last_status);
+		return;
 	}
 	else
 	{

@@ -4,6 +4,7 @@
  * main_loop - Main execution loop of the shell
  * @argv0: Program name (used for error messages)
  * @envp: Array of environment variables
+ * @last_status: Integer containing the last status value
  *
  * This function runs an infinite loop that prompts the user for input,
  * reads a command line, tokenizes it, checks if it matches a built-in,

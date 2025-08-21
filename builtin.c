@@ -5,6 +5,7 @@
  * @args: Array of command arguments
  * @envp: Array of environment variables
  * @line: Original input line (freed if needed)
+ * @last_status: Integer containing the last status value
  *
  * This function checks if the first argument matches a built-in
  * command. If "exit" is entered, the shell exits after freeing
