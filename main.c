@@ -24,6 +24,8 @@ void main_loop(char *argv0, char **envp, int *last_status)
 		count++;
 
 		line = read_line();
+		if (!line)
+			break;
 		token_command(line, args);
 
 		if (!built_in_checks(args, envp, line))
