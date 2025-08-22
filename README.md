@@ -14,8 +14,7 @@ The *Simple Shell* is a simplified reproduction of a Linux command terminal. You
 
 ## Flowchart
 
-<img width="1976" height="1417" alt="Flowchart_Simple_Shell" src="https://github.com/user-attachments/assets/170e6fc9-4e13-45fa-8fdf-fe44ef5328e0" />
-
+<img width="2102" height="1591" alt="Flowchart_Simple_Shell" src="https://github.com/user-attachments/assets/4c84e8cb-fc9b-4aca-a146-62291493776c" />
 
 ## Installation
 
