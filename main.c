@@ -52,8 +52,7 @@ int main(int argc, char *argv[], char **envp)
 {
 	int last_status = 0;
 
-	if (argc > 256)
-		return (1);
+	argc = argc;
 	signal(SIGINT, handle_sigint);
 	main_loop(argv[0], envp, &last_status);
 	return (last_status);
