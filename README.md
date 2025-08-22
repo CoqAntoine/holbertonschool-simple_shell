@@ -78,10 +78,10 @@ You can test the *Simple Shell* by executing those commands :
 - **Simple tests**
 
 ````
-ls - l
-/bin/ls -l
-pwd
-whoami
+$ ls - l
+$ /bin/ls -l
+$ pwd
+$ whoami
 ````
 
 *Expected output :*
@@ -97,8 +97,8 @@ john
 
 When you're trying the **exit** built-in, you're expeted to exit the *Simple Shell.*
 ````
-env
-exit
+$ env
+$ exit
 ````
 
 *Expected output :*
